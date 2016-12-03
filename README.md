@@ -8,10 +8,10 @@ Coming Soon
 
 ## Techstack
 #### Front-End
-React.js
-Javascript
-HTML5
-CSS3
+  - React.js
+  - Javascript
+  - HTML5
+  - CSS3
 
 #### Back-End
 Golang

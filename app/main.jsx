@@ -4,4 +4,6 @@ import App from './app.jsx';
 import Backend from './backend';
 
 var backend = new Backend();
+console.log("hello ramiro")
+backend.loadDataFromServer();
 ReactDOM.render(<App backend={backend} />, document.querySelector('.react'));

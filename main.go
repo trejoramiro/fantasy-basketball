@@ -5,7 +5,6 @@ import (
   "encoding/json"
   "net/http"
   "nba-fantasy-app/databaseutil"
-
 )
 
 func process(w http.ResponseWriter, r *http.Request) {

@@ -1,8 +1,12 @@
 import React from 'react';
 
 class Team extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+  }
+
+  removeTeamMember(index) {
+    this.props.removeTeamMember(index);
   }
 
   render() {
@@ -20,10 +24,10 @@ class Team extends React.Component {
                     </div>
                     <div className="panel-body">
                       <h4>{ x.lastname }</h4><h5>{ x.firstname }</h5>
-                      <h5>Pts: 0 </h5>
-                      <h5>Ast: 0 </h5>
-                      <h5>Reb: 0 </h5>
-                      <button className="btn btn-warning">Remove</button>
+                      <h5>Pts: {x.pts} </h5>
+                      <h5>Ast: {x.ast}  </h5>
+                      <h5>Reb: {x.reb} </h5>
+                      <button className="btn btn-warning" onClick={this.removeTeamMember.bind(this, x.id)}>Remove</button>
                     </div>
                   </div>
                 </div>)

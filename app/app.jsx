@@ -47,14 +47,6 @@ class App extends React.Component {
   }
 
 
-  updateTotal() {
-    var newTotal = this.state.team.reduce(function(total, item){
-      return total + item.pts;
-    }, 0)
-    this.setState({ total: newTotal });
-  }
-
-
   removeTeamMember(index) {
     let teamMembers = this.state.team.filter(function(item) {
       return item.id !== index;
@@ -67,8 +59,11 @@ class App extends React.Component {
 
 
   addTeamMember(newTeamMember) {
-    this.setState({ team: this.state.team.concat([newTeamMember])});
-    this.updateTotal();
+    let newTeam = this.state.team.concat([newTeamMember]);
+    let sum = newTeam.reduce((total, item) => {
+      return total + item.pts;
+    }, 0);
+    this.setState({ team: newTeam, total: sum });
   }
 
 

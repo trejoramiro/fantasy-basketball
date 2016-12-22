@@ -56,10 +56,13 @@ class App extends React.Component {
 
 
   removeTeamMember(index) {
-    var teamMembers = this.state.team.filter(function(item) {
+    let teamMembers = this.state.team.filter(function(item) {
       return item.id !== index;
     });
-    this.setState({ team: teamMembers });
+    let sum = teamMembers.reduce((total, item) => {
+      return total + item.pts;
+    }, 0);
+    this.setState({ team: teamMembers, total: sum });
   }
 
 

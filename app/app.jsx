@@ -19,6 +19,12 @@ class App extends React.Component {
     this.performOtherSearch = this.performOtherSearch.bind(this);
   }
 
+  componentDidMount() {
+    let sum = this.state.team.reduce((total, item) => {
+      return total + item.pts;
+    }, 0);
+    this.setState({ total: sum });
+  }
 
   performSearch(item) {
     var url = 'search?type=' + item.type + '&text=' + item.text + '&offset=0'
@@ -26,7 +32,6 @@ class App extends React.Component {
     fetch(url).then(function(response){
       return response.json();
     }).then(function(d){
-      console.log(d);
       _this.setState({ players: d[0].data, links: { prev: d[0].link.prev , next: d[0].link.next } });
     });
   }
@@ -37,7 +42,6 @@ class App extends React.Component {
     fetch(url).then(function(response){
       return response.json();
     }).then(function(d){
-      console.log(d);
       _this.setState({ players: d[0].data, links: { prev: d[0].link.prev , next: d[0].link.next } });
     });
   }

@@ -20,11 +20,6 @@ class App extends React.Component {
   }
 
 
-  componentDidMount() {
-
-  }
-
-
   performSearch(item) {
     var url = 'search?type=' + item.type + '&text=' + item.text + '&offset=0'
     var _this = this;

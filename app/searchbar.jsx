@@ -31,6 +31,29 @@ class SearchBar extends React.Component {
   }
 
   render() {
+
+    let input = null;
+    if (this.state.type == 'position') {
+      input = <select className="form-control" value={this.state.text} onChange={this.handleTextChange}>
+        <option value="Center">Center</option>
+        <option value="Guard">Guard</option>
+        <option value="power_forward">Power Forward</option>
+        <option value="point_guard">Point Guard</option>
+      </select>;
+
+    } else if (this.state.type == 'team') {
+      input = <select className="form-control" value={this.state.text} onChange={this.handleTextChange}>
+        <option value="CHI">CHI</option>
+        <option value="LAL">LAL</option>
+        <option value="MIA">MIA</option>
+        <option value="NYC">NYC</option>
+      </select>;
+
+    } else {
+      input = <input type="text" className="form-control" value={this.state.text} onChange={this.handleTextChange} placeholder="Search"></input>;
+
+    }
+
     return (
       <div>
         <div className="row">
@@ -43,12 +66,13 @@ class SearchBar extends React.Component {
                   <option value="team">Team</option>
                   <option value="historic">Historic</option>
                 </select>
-                <input type="text" className="form-control" value={this.state.text} onChange={this.handleTextChange} placeholder="Search"></input>
+                { input }
               </div>
                 <button type="button" className="btn btn-default" onClick={this.searchQuery.bind(this, this.state.text, this.state.type)}>Submit</button>
             </form>
           </div>
           </div>
+          <br></br>
         </div>
       );
   }

@@ -9,6 +9,7 @@ import (
 
 func process(w http.ResponseWriter, r *http.Request) {
 
+    fmt.Println(r.URL.Query())
     qType := r.URL.Query()["type"][0]
     qText := r.URL.Query()["text"][0]
     qOffset := r.URL.Query()["offset"][0]

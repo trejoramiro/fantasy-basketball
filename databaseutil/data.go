@@ -37,6 +37,7 @@ type Player struct {
 	PTS int `json:"pts"`
 	AST int `json:"ast"`
 	REB int `json:"reb"`
+	AVATAR_URL string `json:"img_url"`
 }
 
 type Stat struct {
@@ -76,23 +77,23 @@ func PlayerSearchQuery(queryValues [3]string) (search []Search, err error) {
 
 	if qType == "name" {
 
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.first_name='" + "Jimmy" + "' AND players.last_name='" + "Butler" + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFEST " + qOffset + ";"
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.first_name='" + "Jimmy" + "' AND players.last_name='" + "Butler" + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFEST " + qOffset + ";"
 
 	} else if qType == "position" {
 
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.position='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.position='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
 
 	} else if qType == "historic" {
 
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=FALSE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=FALSE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
 
 	} else if qType == "team" {
 
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.team_abb='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.team_abb='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
 
 	} else {
 
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.country, players.school, players.jersey, players.position, players.height, players.weight, players.current_player, players.last_affiliation, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.country, players.school, players.jersey, players.position, players.height, players.weight, players.current_player, players.last_affiliation, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
 	}
 
 	rows, err := DB.Query(queryString)
@@ -122,7 +123,8 @@ func PlayerSearchQuery(queryValues [3]string) (search []Search, err error) {
 										 &player.TEAM_CITY,
 									 	 &player.PTS,
 									 	 &player.AST,
-									   &player.REB)
+									   &player.REB,
+									 	 &player.AVATAR_URL)
 
 		if err != nil {
 			 return

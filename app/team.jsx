@@ -23,6 +23,9 @@ class Team extends React.Component {
                       </div>
                     </div>
                     <div className="panel-body">
+                      <a href="#" className="thumbnail">
+                        <img src={ x.img_url } alt={ x.lastname }/>
+                      </a>
                       <h4>{ x.lastname }</h4><h5>{ x.firstname }</h5>
                       <h5>Pts: {x.pts} </h5>
                       <h5>Ast: {x.ast}  </h5>

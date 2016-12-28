@@ -9,7 +9,7 @@ class App extends React.Component {
     this.state = {
       "total": 0,
       "players": [],
-      "team": [ { id: 1, firstname: "Lebron", lastname: "James", pts: 30, ast: 15, reb: 6, position: "Power Forward" },{id: 2, firstname: "Russell", lastname: "Westbrook", pts: 31, ast: 14, reb: 10, position: "Point Guard"},{id: 3, firstname: "Kevin", lastname: "Durant", pts: 27, ast: 12, reb: 8, position: "Gaurd" } ],
+      "team": [ { id: 1, firstname: "Lebron", lastname: "James", pts: 30, ast: 15, reb: 6, position: "Power Forward", img_url: "http://stats.nba.com/media/players/230x185/2544.png"},{id: 2, firstname: "Russell", lastname: "Westbrook", pts: 31, ast: 14, reb: 10, position: "Point Guard", img_url: "http://stats.nba.com/media/players/230x185/201566.png"},{id: 3, firstname: "Kevin", lastname: "Durant", pts: 27, ast: 12, reb: 8, position: "Gaurd", img_url: "http://stats.nba.com/media/players/230x185/201142.png" } ],
       "links": [ { prev: '#', next: '#' } ],
     };
 

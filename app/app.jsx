@@ -59,11 +59,13 @@ class App extends React.Component {
 
 
   addTeamMember(newTeamMember) {
+	  if(this.state.team.length < 5) {
     let newTeam = this.state.team.concat([newTeamMember]);
     let sum = newTeam.reduce((total, item) => {
       return total + item.pts;
     }, 0);
     this.setState({ team: newTeam, total: sum });
+	  }
   }
 
 

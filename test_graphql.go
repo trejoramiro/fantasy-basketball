@@ -1,4 +1,4 @@
-package main 
+package main
 
 import (
 	"encoding/json"
@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	// Schema for type system 
+	// Schema for type system
 	fields := graphql.Fields{
 		"comments": &graphql.Field{
-			Type: graphql.String, 
+			Type: graphql.String,
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 				return "This is a comment body" , nil
 			},
@@ -27,11 +27,11 @@ if err != nil {
 	log.Fatalf("failed to create new schema, error: %v", err)
 }
 
-// Query 
+// Query
 
 query := `
-	{ 
-		comments 
+	{
+		comments
 	}
 	`
 params := graphql.Params{Schema: schema, RequestString: query}
@@ -46,4 +46,3 @@ rJSON, _ := json.Marshal(r)
 fmt.Printf("%s \n", rJSON)
 
 }
-

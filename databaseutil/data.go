@@ -73,29 +73,10 @@ func PlayerSearchQuery(queryValues [3]string) (search []Search, err error) {
 	qText := queryValues[1]
 	qOffset := queryValues[2]
 
-	var queryString string
-
-	if qType == "name" {
-
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.first_name='" + "Jimmy" + "' AND players.last_name='" + "Butler" + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFEST " + qOffset + ";"
-
-	} else if qType == "position" {
-
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.position='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
-
-	} else if qType == "historic" {
-
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=FALSE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
-
-	} else if qType == "team" {
-
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.team_abb='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
-
-	} else {
-
-		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.country, players.school, players.jersey, players.position, players.height, players.weight, players.current_player, players.last_affiliation, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+	queryString, err = QueryType(qType)
+	if err != nil {
+		return
 	}
-
 	rows, err := DB.Query(queryString)
 
 	if err != nil {
@@ -141,27 +122,13 @@ func PlayerSearchQuery(queryValues [3]string) (search []Search, err error) {
 
 	 i, _ := strconv.Atoi(qOffset)
 
-	 if i == 0 {
-		 minusOffset := 0
-		 plusOffset := i + 6
-
-		 prevLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(minusOffset)
-		 nextLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(plusOffset)
-
-		 links.PREV = prevLink
-		 links.NEXT = nextLink
-
-	 } else {
-		 minusOffset := i - 6
-		 plusOffset := i + 6
-
-		 prevLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(minusOffset)
-		 nextLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(plusOffset)
-
-		 links.PREV = prevLink
-		 links.NEXT = nextLink
-
+	 prevLink, nextLink, err = PaginationLinks(i)
+	 if err != nil {
+		 return
 	 }
+
+	 links.PREV = prevLink
+	 links.NEXT = nextLink
 
 	 searchData := Search{}
 	 searchData.DATA = players
@@ -170,4 +137,44 @@ func PlayerSearchQuery(queryValues [3]string) (search []Search, err error) {
 	 search = append(search, searchData)
 
 	 return
+}
+
+func QueryType(qType string) queryString string err error {
+		var queryString string
+
+		if qType == "name" {
+			queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.first_name='" + "Jimmy" + "' AND players.last_name='" + "Butler" + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFEST " + qOffset + ";"
+			return queryString
+		}
+		else if qType == "position" {
+			queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.position='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+			return queryString
+		}
+		else if qType == "historic" {
+			queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=FALSE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+			return queryString
+		}
+		else if qType == "team" {
+			queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.jersey, players.position, players.height, players.weight, players.current_player, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE WHERE players.team_abb='" + qText + "' ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+			return queryString
+		}
+
+		queryString = "SELECT players.id, players.first_name, players.last_name, players.career_start, players.career_end, players.birthdate, players.country, players.school, players.jersey, players.position, players.height, players.weight, players.current_player, players.last_affiliation, players.api_id, players.team_id, players.team_name, players.team_abb, players.team_code, players.team_city, stats.pts, stats.ast, stats.reb, players.avatar_url FROM players INNER JOIN stats ON players.id=stats.player_id AND players.current_player=TRUE ORDER BY stats.pts DESC, players.last_name ASC LIMIT 6 OFFSET " + qOffset + ";"
+		return queryString
+}
+
+func PaginationLinks(num int) prevLink string, nextLink string, err error {
+	if num == 0 {
+		minusOffset := 0
+		plusOffset := i + 6
+		prevLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(minusOffset)
+		nextLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(plusOffset)
+		return prevLink, nextLink
+	}
+
+	minusOffset := i - 6
+	plusOffset := i + 6
+	prevLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(minusOffset)
+	nextLink = "/search?type=" + qType + "&text=" + qText + "&offset=" + strconv.Itoa(plusOffset)
+	return prevLink, nextLink
 }
